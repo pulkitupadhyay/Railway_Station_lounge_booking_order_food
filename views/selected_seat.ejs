@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/stylesheets/nav.css">
+     <style>
+      /* CSS for the payment details page */
+.box1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: #f0f0f0; /* Set the background color to a light gray */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Add a subtle box shadow */
+    max-width: 400px; /* Adjust the width as needed */
+    margin: 0 auto;
+    margin-top: 20px;
+  }
+  
+  .img img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 20px;
+    border: 1px solid #ccc; /* Add a border to the image */
+    border-radius: 5px;
+  }
+  
+  h1 {
+    font-size: 24px;
+    margin: 10px 0;
+    color: #333; /* Set the text color to a dark gray */
+  }
+  
+  p {
+    font-size: 16px;
+    color: #666; /* Set a slightly lighter text color */
+  }
+  
+  button {
+    background-color: #007bff; /* Use a primary color for the button */
+    color: #fff;
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 20px;
+  }
+  
+  button:hover {
+    background-color: #0056b3; /* Darken the button color on hover */
+  }
+  
+  /* Add some spacing between seat details */
+  .seat h1 {
+    margin-bottom: 5px;
+  }
+  
+  /* Style the total price section differently */
+  .seat h1:last-child {
+    font-weight: bold;
+    color: #ff5733; /* Use a distinct color for the total price */
+  }
+  
+  /* Add some margin to the top of the box */
+  .box1 {
+    margin-top: 20px;
+  }
+  
+    </style> 
+</head>
+<body>
+
+   <div id="main">
+    <header class="header">
+        <img src="\images\logo.jpg" alt="" class="logo">
+        <nav class="navbar">
+          <ul class="main-nav">
+            <li><a href="/after_loungeBook_loggedInIndex">Home</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#footer-container" >Contact</a></li>
+            <li><a href="#">Services</a></li>
+            <li><a href="/userAccountPage">User Account</a></li>
+          </ul>
+        </nav>
+        <button class="menu-toggle">&#9776;</button>
+    </header>
+
+    <div class="box1">
+        <div class="img"> <img src="/images/shofa1.png" alt=""></div>
+        <div class="seat">
+            <h1>hello ji  =  <%= newOrder.userName %></h1>
+            <p>this is your selected seat</p>
+            <% var seatLength=newOrder.seats.length %> 
+            <% for(var i = 0;i< seatLength ;i++){ %>
+                    <h1><%= newOrder.seats[i] %> price = 300</h1>
+            <% } %>
+            <h1>total price = <%= seatLength=newOrder.seats.length*300 %></h1>
+
+            <button id="rzp-button1">Pay with Razorpay</button>
+
+        </div>
+        
+    </div>
+   </div>
+   
+   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+   <script>
+    document.getElementById('rzp-button1').onclick = async function (e) {
+        e.preventDefault();
+
+        let response = await fetch('http://localhost:3000/payment', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                amount: 500, // Change this to the desired amount in INR
+            })
+        });
+
+        let orderData = await response.json();
+        console.log(orderData)
+
+        var options = {
+            "key": "rzp_test_05baNxbdPygtnZ", // Replace with your Razorpay API key
+            "amount": orderData.order.amount, // Use the amount from the response
+            "currency": "INR",
+            "order_id": orderData.order.id, // Use the Order ID from the response
+            "handler": function (response) {
+                alert(response.razorpay_payment_id);
+                alert(response.razorpay_order_id);
+                alert(response.razorpay_signature);
+            },
+        };
+
+        var rzp1 = new Razorpay(options);
+        rzp1.open();
+    }
+</script>
+</body>
+</html>

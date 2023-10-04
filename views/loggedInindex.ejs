@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="./stylesheets/style.css">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.4.0/fonts/remixicon.css" rel="stylesheet">
+  <link rel="stylesheet" href="/stylesheets/nav.css">
+  <link rel="stylesheet" href="/stylesheets/function.css">
+
+</head>
+<body>
+  <div id="main">
+   
+    <header class="header">
+        <img src="\images\logo.jpg" alt="" class="logo">
+        <nav class="navbar">
+          <ul class="main-nav">
+            <li><a href="/">Home</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#footer-container" >Contact</a></li>
+            <li><a href="#">Services</a></li>
+            <li><a href="/userAccountPage">User Account</a></li>
+          </ul>
+        </nav>
+        <button class="menu-toggle">&#9776;</button>
+    </header>
+    
+    
+   
+    <div class="functions">
+      <form action="/choiceFilling" method="post">
+       <label for="station">Choose Station:</label>
+   
+       <select id="station" name="stationName">
+         <% for(var i=0;i< station.length; i++){ %>
+         <option value="<%= station[i] %>" name="<%= station[i] %>" ><%= station[i] %></option>
+         <% } %>
+       </select>
+   
+       <label for="check-in-time">Check-in Time:</label>
+       <input type="datetime-local" id="check-in-time" name="checkIn">
+   
+       <label for="check-out-time"> Check-out Time:</label>
+       <input type="number" name="hours" placeholder="hours" id="check-out-time">
+     
+   
+         <button id="search-btn" type="submit">Search</button>
+      </form>
+    </div>
+
+    <% include ./slider.ejs %>
+    <% include ./about.ejs %>
+    <% include ./service.ejs %>
+    <% include ./footer/footer.ejs %>
+    
+
+  </div>
+   
+
+ <!-- <div class="orderFood">
+
+
+
+
+<H1>order Food</H1>
+
+<form action="/choose_station_for_order_food" method="post">
+<span>choose stations</span>
+<select id="station" name="stationName">
+  <% for(var i=0;i< station.length; i++){ %>
+  <option value="<%= station[i] %>" name="<%= station[i] %>" ><%= station[i] %></option>
+  <% } %>
+</select>
+
+<button type="submit"> see awailable items </button>
+
+</form>
+
+
+
+ </div> -->
+
+
+ <script src="/javascripts/script.js"></script>
+</body>
+</html>
